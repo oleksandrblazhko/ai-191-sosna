@@ -1,11 +1,14 @@
-CREATE OR REPLACE FUNCTION get_order_info_secure(order_name VARCHAR)
-RETURNS TABLE
-(id INTEGER, name VARCHAR, info VARCHAR)
+CREATE OR REPLACE FUNCTION passwd_change_secure(login varchar, passwd varchar)
+RETURNS varchar
 AS $$
 DECLARE
-	str VARCHAR;
+	strmd5 varchar(100);
+ 	str varchar;
 BEGIN
-	str := 'SELECT id, name, info from order_info where name = $1';
-	RETURN QUERY EXECUTE str USING order_name;
+	strmd5 := md5(passwd); 
+	str := 'update users set passwd = $1 where login = $2';
+	raise notice 'Query=%' , str;
+	EXECUTE str USING strmd5, login;
+	return strmd5;
 END;
 $$ LANGUAGE plpgsql;
