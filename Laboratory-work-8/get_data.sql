@@ -1,14 +1,13 @@
-
-CREATE OR REPLACE FUNCTION get_order_info(order_name VARCHAR)
+CREATE OR REPLACE FUNCTION get_data(car_model VARCHAR)
 RETURNS TABLE
-(id INTEGER, name VARCHAR, info VARCHAR)
+(c_id INTEGER, model VARCHAR, year INTEGER)
 AS $$
 DECLARE
 	str VARCHAR;
 BEGIN
-	str := 'SELECT id, name, info from order_info where name = ''' || 
-		order_name || '''';
+	str := 'SELECT c_id, model, year from car where model = ''' || 
+		car_model || '''';
 	RAISE NOTICE 'Query=%',str;
 	RETURN QUERY EXECUTE str;
-END;
+END; 
 $$ LANGUAGE plpgsql;
